@@ -2,10 +2,15 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
+    <meta name="google-site-verification" content="ew7WkA0ttppDO1NdGHk7GY4Y_xCJA5-ylrTEMCDyWtI" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameWorld - Jogos</title>
+    <title>GameWorld - Início</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -30,10 +35,20 @@
             gap: 20px;
         }
 
-        .logo-section { display: flex; align-items: center; }
-        .logo-section img { height: 200px; width: auto; }
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
 
-        nav { display: flex; gap: 15px; }
+        .logo-section img {
+            height: 200px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
 
         nav a {
             color: #ffffff;
@@ -45,68 +60,104 @@
             transition: background-color 0.3s ease;
         }
 
-        nav a:hover { background-color: rgba(233, 69, 96, 0.3); }
-        nav a.active { background-color: #e94560; }
-
-        .container { max-width: 1400px; margin: 0 auto; padding: 40px; }
-
-        .aviso {
-            background-color: #0f3460;
-            border-left: 4px solid #e94560;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 5px;
+        nav a:hover {
+            background-color: rgba(233, 69, 96, 0.3);
         }
-        .aviso h2 { color: #e94560; margin-bottom: 10px; }
 
-        .page-title {
+        nav a.active {
+            background-color: #e94560;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .hero-section {
             text-align: center;
+            padding: 60px 40px;
+            background-color: #0f3460;
+            border-radius: 15px;
             margin: 40px 0;
+            border: 2px solid #16213e;
+        }
+
+        .hero-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #e94560;
+            font-weight: 700;
+        }
+
+        .hero-section p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+        }
+
+        .hero-section img {
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #e94560;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #ff2e63;
+        }
+
+        .features-title {
+            text-align: center;
+            margin: 60px 0 40px;
             font-size: 2.2em;
             color: #e94560;
             font-weight: 700;
         }
 
-        .jogos-grid {
+        .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
-        .jogo-card {
+        .feature-card {
             background-color: #0f3460;
+            padding: 40px 30px;
             border-radius: 10px;
-            padding: 30px 20px;
             text-align: center;
             border: 2px solid #16213e;
             transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
         }
 
-        .jogo-card:hover { border-color: #ff2e63; transform: translateY(-5px); }
+        .feature-card:hover {
+            border-color: #ff2e63;
+        }
 
-        .jogo-icon { margin-bottom: 15px; }
-        .jogo-icon img { max-width: 100%; height: auto; }
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
 
-        .jogo-card h3 { color: #ffffff; margin: 15px 0; font-size: 1.3em; }
-        .jogo-card p { color: #ddd; font-size: 0.95em; margin-bottom: 15px; }
-
-        .badge {
-            display: inline-block;
-            background-color: #e94560;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.9em;
+        .feature-card h3 {
+            color: #ff2e63;
+            margin: 20px 0 15px;
+            font-size: 1.4em;
             font-weight: 600;
-            margin-top: 10px;
         }
 
-        .galo-icon svg { width: 110px; height: 110px; margin: 10px auto 0; display: block; }
+        .feature-card p {
+            line-height: 1.6;
+        }
 
         footer {
             background-color: #0f3460;
@@ -117,9 +168,32 @@
         }
 
         @media (max-width: 768px) {
-            .header-container { flex-direction: column; gap: 20px; padding: 20px; }
-            nav { flex-wrap: wrap; justify-content: center; }
-            .jogos-grid { grid-template-columns: 1fr; }
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .logo-section {
+                justify-content: center;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-section h2 {
+                font-size: 2em;
+            }
+
+            .hero-section p {
+                font-size: 1.1em;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -132,165 +206,47 @@
                 </a>
             </div>
             <nav>
-                <a href="index.html">Início</a>
-                <a href="jogos.html" class="active">Jogos</a>
+                <a href="index.html" class="active">Início</a>
+                <a href="jogos.html">Jogos</a>
                 <a href="sobre.html">Sobre</a>
             </nav>
         </div>
     </header>
 
     <div class="container">
-        <div class="aviso">
-            <h2>Aviso!</h2>
-            <p>Site em construção</p>
+        <div class="hero-section">
+            <img src="C-pia-de-GameWorld-unscreen.gif" alt="GameWorld" width="250">
+            <h2>Bem-vindo ao GameWorld</h2>
+            <p>O melhor portal de jogos online está aqui!</p>
+            <a href="jogos.html" class="cta-button">Ver Jogos</a>
         </div>
 
-        <h2 class="page-title">Jogos Disponíveis</h2>
+        <h2 class="features-title">Porque escolher o GameWorld?</h2>
 
-        <div class="jogos-grid">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Variedade de Jogos</h3>
+                <p>Dezenas de jogos para todos os gostos e idades</p>
+            </div>
 
-            <!-- A FUGA -->
-            <a href="https://afuga1.netlify.app/" target="_blank" class="jogo-card">
-                <div class="jogo-icon">
-                    <img src="a_fuga-removebg-preview.png" alt="A Fuga" width="250">
-                </div>
-                <h3>A Fuga</h3>
-                <p>Jogo de aventura emocionante!</p>
-                <span class="badge">Jogar!</span>
-            </a>
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Totalmente Grátis</h3>
+                <p>Joga sem pagar nada, sem taxas escondidas</p>
+            </div>
 
-            <!-- CAÇA ÀS MOEDAS -->
-            <a href="https://cacaasmoedas.netlify.app/" target="_blank" class="jogo-card">
-                <div class="jogo-icon">
-                    <img src="Caça_às_moedas_de_carro-removebg-preview.png" alt="Caça às moedas" width="250">
-                </div>
-                <h3>Caça as moedas Carro</h3>
-                <p>Jogo de carros</p>
-                <span class="badge">Jogar!</span>
-            </a>
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Joga Instantaneamente</h3>
+                <p>Sem downloads, joga diretamente no navegador</p>
+            </div>
 
-            <!-- JOGO DO GALO -->
-            <a href="jogo-do-galo.html" class="jogo-card">
-                <div class="jogo-icon galo-icon">
-                    <svg viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <line x1="37" y1="10" x2="37" y2="100" stroke="#ff2e63" stroke-width="3.5" stroke-linecap="round"/>
-                        <line x1="73" y1="10" x2="73" y2="100" stroke="#ff2e63" stroke-width="3.5" stroke-linecap="round"/>
-                        <line x1="10" y1="37" x2="100" y2="37" stroke="#ff2e63" stroke-width="3.5" stroke-linecap="round"/>
-                        <line x1="10" y1="73" x2="100" y2="73" stroke="#ff2e63" stroke-width="3.5" stroke-linecap="round"/>
-                        <line x1="46" y1="46" x2="64" y2="64" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
-                        <line x1="64" y1="46" x2="46" y2="64" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
-                        <circle cx="23" cy="23" r="9" stroke="#4a90e2" stroke-width="3" fill="none"/>
-                        <line x1="78" y1="78" x2="90" y2="90" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                        <line x1="90" y1="78" x2="78" y2="90" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                        <circle cx="87" cy="23" r="9" stroke="#4a90e2" stroke-width="3" fill="none"/>
-                        <line x1="14" y1="78" x2="26" y2="90" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                        <line x1="26" y1="78" x2="14" y2="90" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <h3>Jogo do Galo</h3>
-                <p>Joga sozinho contra o PC ou desafia um amigo!</p>
-                <span class="badge">Jogar!</span>
-            </a>
-
-            <!-- SNAKE -->
-            <a href="snake.html" class="jogo-card">
-                <div class="jogo-icon galo-icon">
-                    <svg viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="10" y="48" width="18" height="18" rx="5" fill="#ff2e63"/>
-                        <rect x="30" y="48" width="18" height="18" rx="5" fill="#ff2e63" opacity=".85"/>
-                        <rect x="50" y="48" width="18" height="18" rx="5" fill="#ff2e63" opacity=".7"/>
-                        <rect x="50" y="28" width="18" height="18" rx="5" fill="#ff2e63" opacity=".55"/>
-                        <rect x="70" y="28" width="18" height="18" rx="5" fill="#ff2e63" opacity=".4"/>
-                        <rect x="70" y="48" width="28" height="28" rx="7" fill="#ff2e63"/>
-                        <circle cx="82" cy="57" r="3" fill="white"/>
-                        <circle cx="92" cy="57" r="3" fill="white"/>
-                        <circle cx="25" cy="82" r="10" fill="#4ade80"/>
-                        <rect x="24" y="70" width="3" height="7" rx="1" fill="#166534"/>
-                    </svg>
-                </div>
-                <h3>Snake</h3>
-                <p>Come a comida e cresce sem bater nas paredes!</p>
-                <span class="badge">Jogar!</span>
-            </a>
-
-            <!-- BREAKOUT -->
-            <a href="breakout.html" class="jogo-card">
-                <div class="jogo-icon galo-icon">
-                    <svg viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="8"  y="12" width="26" height="12" rx="3" fill="#ff2e63"/>
-                        <rect x="40" y="12" width="26" height="12" rx="3" fill="#ff2e63"/>
-                        <rect x="72" y="12" width="26" height="12" rx="3" fill="#ff2e63"/>
-                        <rect x="8"  y="29" width="26" height="12" rx="3" fill="#ff6b35"/>
-                        <rect x="40" y="29" width="26" height="12" rx="3" fill="#ff6b35"/>
-                        <rect x="72" y="29" width="26" height="12" rx="3" fill="#ff6b35"/>
-                        <rect x="8"  y="46" width="26" height="12" rx="3" fill="#ffd700"/>
-                        <rect x="40" y="46" width="26" height="12" rx="3" fill="#ffd700"/>
-                        <rect x="72" y="46" width="26" height="12" rx="3" fill="#ffd700"/>
-                        <circle cx="55" cy="74" r="7" fill="white"/>
-                        <rect x="22" y="92" width="62" height="10" rx="5" fill="#ff2e63"/>
-                    </svg>
-                </div>
-                <h3>Breakout</h3>
-                <p>Parte todos os blocos com a bola e a raquete!</p>
-                <span class="badge">Jogar!</span>
-            </a>
-
-            <!-- PEDRA PAPEL TESOURA -->
-            <a href="pedra-papel-tesoura.html" class="jogo-card">
-                <div class="jogo-icon galo-icon">
-                    <svg viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="28" cy="70" r="18" fill="#ff2e63" opacity=".9"/>
-                        <text x="28" y="76" text-anchor="middle" font-size="18">🪨</text>
-                        <rect x="40" y="18" width="30" height="36" rx="5" fill="#4a90e2" opacity=".9"/>
-                        <text x="55" y="42" text-anchor="middle" font-size="18">📄</text>
-                        <circle cx="82" cy="70" r="18" fill="#1d9e75" opacity=".9"/>
-                        <text x="82" y="76" text-anchor="middle" font-size="18">✂️</text>
-                    </svg>
-                </div>
-                <h3>Pedra Papel Tesoura</h3>
-                <p>Desafia o PC neste clássico jogo de escolhas!</p>
-                <span class="badge">Jogar!</span>
-            </a>
-
-            <!-- CLICKER -->
-            <a href="clicker.html" class="jogo-card">
-                <div class="jogo-icon galo-icon">
-                    <svg viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="55" cy="55" r="38" fill="#0f3460" stroke="#ff2e63" stroke-width="3"/>
-                        <circle cx="55" cy="55" r="24" fill="#ff2e63" opacity=".15"/>
-                        <text x="55" y="63" text-anchor="middle" font-size="32">🎮</text>
-                        <circle cx="82" cy="28" r="10" fill="#ff2e63"/>
-                        <text x="82" y="33" text-anchor="middle" font-size="11" fill="white" font-weight="bold">+1</text>
-                    </svg>
-                </div>
-                <h3>Clicker</h3>
-                <p>Clica, compra melhorias e domina o universo!</p>
-                <span class="badge">Jogar!</span>
-            </a>
-
-            <!-- JOGO DA MEMÓRIA -->
-            <a href="memoria.html" class="jogo-card">
-                <div class="jogo-icon galo-icon">
-                    <svg viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Carta virada (verso) -->
-                        <rect x="8" y="10" width="38" height="50" rx="6" fill="#16213e" stroke="#ff2e63" stroke-width="2"/>
-                        <text x="27" y="42" text-anchor="middle" font-size="22">❓</text>
-                        <!-- Carta revelada -->
-                        <rect x="52" y="10" width="38" height="50" rx="6" fill="#1a1a6e" stroke="#e94560" stroke-width="2"/>
-                        <text x="71" y="42" text-anchor="middle" font-size="22">🍎</text>
-                        <!-- Carta revelada correspondente -->
-                        <rect x="8" y="66" width="38" height="36" rx="6" fill="#1a1a6e" stroke="#4ade80" stroke-width="2"/>
-                        <text x="27" y="90" text-anchor="middle" font-size="20">🍎</text>
-                        <!-- Carta virada (verso) -->
-                        <rect x="52" y="66" width="38" height="36" rx="6" fill="#16213e" stroke="#ff2e63" stroke-width="2"/>
-                        <text x="71" y="90" text-anchor="middle" font-size="20">❓</text>
-                    </svg>
-                </div>
-                <h3>Jogo da Memória</h3>
-                <p>Encontra todos os pares e passa de nível!</p>
-                <span class="badge">Jogar!</span>
-            </a>
-
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Sempre Atualizado</h3>
+                <p>Novos jogos adicionados regularmente</p>
+            </div>
         </div>
     </div>
 
