@@ -1,17 +1,19 @@
 <!DOCTYPE html>
+<!-- Define o tipo de documento como HTML5 -->
 <html lang="pt">
 <head>
+    <!-- Codificação de caracteres para suportar acentos e símbolos portugueses -->
     <meta charset="UTF-8">
+    <!-- Verificação do Google Search Console para indexar o site -->
     <meta name="google-site-verification" content="ew7WkA0ttppDO1NdGHk7GY4Y_xCJA5-ylrTEMCDyWtI" />
+    <!-- Torna o site responsivo em dispositivos móveis -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GameWorld - Início</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* Remove margens e espaçamentos padrão do browser */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* Fundo com gradiente azul escuro em toda a página */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #050f1e 0%, #071a3d 50%, #0a2463 100%);
@@ -19,6 +21,7 @@
             color: #ffffff;
         }
 
+        /* Barra de topo com o logo e navegação */
         header {
             background-color: #0f3460;
             border-bottom: 2px solid #ff2e63;
@@ -35,20 +38,11 @@
             gap: 20px;
         }
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-        }
+        .logo-section { display: flex; align-items: center; }
+        .logo-section img { height: 200px; width: auto; }
 
-        .logo-section img {
-            height: 200px;
-            width: auto;
-        }
-
-        nav {
-            display: flex;
-            gap: 15px;
-        }
+        /* Menu de navegação */
+        nav { display: flex; gap: 15px; }
 
         nav a {
             color: #ffffff;
@@ -60,20 +54,14 @@
             transition: background-color 0.3s ease;
         }
 
-        nav a:hover {
-            background-color: rgba(233, 69, 96, 0.3);
-        }
+        nav a:hover { background-color: rgba(233, 69, 96, 0.3); }
 
-        nav a.active {
-            background-color: #e94560;
-        }
+        /* Destaca a página atual no menu */
+        nav a.active { background-color: #e94560; }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px;
-        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px; }
 
+        /* Secção principal de boas-vindas */
         .hero-section {
             text-align: center;
             padding: 60px 40px;
@@ -83,22 +71,11 @@
             border: 2px solid #16213e;
         }
 
-        .hero-section h2 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            color: #e94560;
-            font-weight: 700;
-        }
+        .hero-section h2 { font-size: 2.5em; margin-bottom: 20px; color: #e94560; font-weight: 700; }
+        .hero-section p { font-size: 1.3em; margin-bottom: 30px; }
+        .hero-section img { margin-bottom: 30px; }
 
-        .hero-section p {
-            font-size: 1.3em;
-            margin-bottom: 30px;
-        }
-
-        .hero-section img {
-            margin-bottom: 30px;
-        }
-
+        /* Botão de chamada para ação */
         .cta-button {
             display: inline-block;
             background-color: #e94560;
@@ -110,19 +87,11 @@
             font-weight: 600;
             transition: background-color 0.3s ease;
         }
+        .cta-button:hover { background-color: #ff2e63; }
 
-        .cta-button:hover {
-            background-color: #ff2e63;
-        }
+        .features-title { text-align: center; margin: 60px 0 40px; font-size: 2.2em; color: #e94560; font-weight: 700; }
 
-        .features-title {
-            text-align: center;
-            margin: 60px 0 40px;
-            font-size: 2.2em;
-            color: #e94560;
-            font-weight: 700;
-        }
-
+        /* Grelha de cards com as características do site */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -138,27 +107,12 @@
             border: 2px solid #16213e;
             transition: all 0.3s ease;
         }
+        .feature-card:hover { border-color: #ff2e63; }
+        .feature-icon { font-size: 3em; margin-bottom: 20px; }
+        .feature-card h3 { color: #ff2e63; margin: 20px 0 15px; font-size: 1.4em; font-weight: 600; }
+        .feature-card p { line-height: 1.6; }
 
-        .feature-card:hover {
-            border-color: #ff2e63;
-        }
-
-        .feature-icon {
-            font-size: 3em;
-            margin-bottom: 20px;
-        }
-
-        .feature-card h3 {
-            color: #ff2e63;
-            margin: 20px 0 15px;
-            font-size: 1.4em;
-            font-weight: 600;
-        }
-
-        .feature-card p {
-            line-height: 1.6;
-        }
-
+        /* Rodapé da página */
         footer {
             background-color: #0f3460;
             text-align: center;
@@ -167,37 +121,18 @@
             border-top: 2px solid #ff2e63;
         }
 
+        /* Adaptação para ecrãs pequenos (telemóvel) */
         @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 20px;
-                padding: 20px;
-            }
-
-            .logo-section {
-                justify-content: center;
-            }
-
-            nav {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .hero-section h2 {
-                font-size: 2em;
-            }
-
-            .hero-section p {
-                font-size: 1.1em;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
+            .header-container { flex-direction: column; gap: 20px; padding: 20px; }
+            nav { flex-wrap: wrap; justify-content: center; }
+            .hero-section h2 { font-size: 2em; }
+            .hero-section p { font-size: 1.1em; }
+            .features-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+    <!-- Cabeçalho com logo clicável e menu de navegação -->
     <header>
         <div class="header-container">
             <div class="logo-section">
@@ -206,6 +141,7 @@
                 </a>
             </div>
             <nav>
+                <!-- "active" destaca a página atual -->
                 <a href="index.html" class="active">Início</a>
                 <a href="jogos.html">Jogos</a>
                 <a href="sobre.html">Sobre</a>
@@ -214,6 +150,7 @@
     </header>
 
     <div class="container">
+        <!-- Secção hero com animação GIF e botão para os jogos -->
         <div class="hero-section">
             <img src="C-pia-de-GameWorld-unscreen.gif" alt="GameWorld" width="250">
             <h2>Bem-vindo ao GameWorld</h2>
@@ -223,25 +160,23 @@
 
         <h2 class="features-title">Porque escolher o GameWorld?</h2>
 
+        <!-- Cards com as vantagens do site -->
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon"></div>
                 <h3>Variedade de Jogos</h3>
                 <p>Dezenas de jogos para todos os gostos e idades</p>
             </div>
-
             <div class="feature-card">
                 <div class="feature-icon"></div>
                 <h3>Totalmente Grátis</h3>
                 <p>Joga sem pagar nada, sem taxas escondidas</p>
             </div>
-
             <div class="feature-card">
                 <div class="feature-icon"></div>
                 <h3>Joga Instantaneamente</h3>
                 <p>Sem downloads, joga diretamente no navegador</p>
             </div>
-
             <div class="feature-card">
                 <div class="feature-icon"></div>
                 <h3>Sempre Atualizado</h3>
@@ -250,6 +185,7 @@
         </div>
     </div>
 
+    <!-- Rodapé com o nome do site -->
     <footer>
         <img src="Nome do Site!.png" alt="GameWorld" width="130">
     </footer>
