@@ -6,6 +6,29 @@
     <title>GameWorld - Clicker</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Botão de voltar fixo no canto superior esquerdo */
+        .back-btn {
+            position: fixed;
+            top: 1.2rem;
+            left: 1.2rem;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 8px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+            z-index: 10;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.14); }
+
+
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -15,44 +38,10 @@
             user-select: none;
         }
 
-        /* ===== HEADER ===== */
-        header {
-            background-color: #0f3460;
-            border-bottom: 2px solid #ff2e63;
-            padding: 20px 0;
-        }
-
-        .header-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo-section img { height: 200px; width: auto; }
-
-        nav { display: flex; gap: 15px; }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 25px;
-            border-radius: 5px;
-            font-size: 1em;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-
-        nav a:hover { background-color: rgba(233, 69, 96, 0.3); }
-        nav a.active { background-color: #e94560; }
-
         /* ===== LAYOUT DO JOGO ===== */
         .game-wrapper {
             max-width: 1100px;
-            margin: 30px auto;
+            margin: 70px auto 30px;
             padding: 0 20px;
             display: grid;
             grid-template-columns: 1fr 320px;
@@ -349,15 +338,6 @@
             to   { transform: translateX(0);    opacity: 1; }
         }
 
-        /* ===== FOOTER ===== */
-        footer {
-            background-color: #0f3460;
-            text-align: center;
-            padding: 30px;
-            margin-top: 20px;
-            border-top: 2px solid #ff2e63;
-        }
-
         /* ===== RESPONSIVO ===== */
         @media (max-width: 768px) {
             .header-container { flex-direction: column; gap: 20px; padding: 20px; }
@@ -369,20 +349,8 @@
 </head>
 <body>
 
-<header>
-    <div class="header-container">
-        <div class="logo-section">
-            <a href="Inicio.html">
-                <img src="Nova pasta/LOGO!!.png" alt="GameWorld Logo">
-            </a>
-        </div>
-        <nav>
-            <a href="Inicio.html">Início</a>
-            <a href="jogos.html" class="active">Jogos</a>
-            <a href="sobre.html">Sobre</a>
-        </nav>
-    </div>
-</header>
+<!-- Botão de voltar à página anterior -->
+<a class="back-btn" href="javascript:history.back()">&#8592; Voltar</a>
 
 <div class="game-wrapper">
 
@@ -446,10 +414,6 @@
     <div class="section-title">🏆 Conquistas</div>
     <div class="achievements-grid" id="achievements-grid"></div>
 </div>
-
-<footer>
-    <img src="Nova pasta/Nome do Site!.png" alt="GameWorld" width="130">
-</footer>
 
 <script>
     // ===== ESTADO DO JOGO =====
