@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameWorld - Sobre</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #050f1e 0%, #071a3d 50%, #0a2463 100%);
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        header {
+            background-color: #0f3460;
+            border-bottom: 2px solid #ff2e63;
+            padding: 20px 0;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-section img {
+            height: 200px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: rgba(233, 69, 96, 0.3);
+        }
+
+        nav a.active {
+            background-color: #e94560;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .sobre-content {
+            background-color: #0f3460;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            line-height: 1.8;
+            border: 2px solid #16213e;
+        }
+
+        .sobre-content h2 {
+            color: #e94560;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .sobre-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .sobre-content p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .sobre-content ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .sobre-content ul li {
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background-color: #0f3460;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #ff2e63;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            color: #e94560;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        footer {
+            background-color: #0f3460;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+            border-top: 2px solid #ff2e63;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .sobre-content {
+                padding: 25px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="index.html">
+                    <img src="LOGO!!.png" alt="GameWorld Logo">
+                </a>
+            </div>
+            <nav>
+                <a href="index.html">Início</a>
+                <a href="jogos.html">Jogos</a>
+                <a href="sobre.html" class="active">Sobre</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sobre-content">
+            <h2>Sobre o GameWorld</h2>
+            <p>
+                O GameWorld nasceu da paixão por jogos e da vontade de criar um espaço onde todos possam 
+                jogar gratuitamente, sem complicações e sem barreiras. Somos uma plataforma dedicada a 
+                trazer diversão e entretenimento para jogadores de todas as idades.
+            </p>
+
+            <h2>A Nossa Missão</h2>
+            <p>
+                A nossa missão é simples: proporcionar acesso fácil e gratuito aos melhores jogos online. 
+                Queremos que cada visita ao nosso site seja uma experiência divertida e memorável, onde 
+                qualquer pessoa possa encontrar um jogo que adore.
+            </p>
+
+            <h2>O Que Oferecemos</h2>
+            <p>
+                No GameWorld encontrarás uma grande variedade de jogos para todos os gostos:
+            </p>
+            <ul>
+                <li>Jogos de aventura emocionantes</li>
+                <li>Corridas cheias de adrenalina</li>
+                <li>Puzzles desafiantes</li>
+                <li>E muito mais!</li>
+            </ul>
+
+            <h2>O Futuro</h2>
+            <p>
+                Estamos constantemente a trabalhar para melhorar a plataforma e adicionar novos jogos. 
+                O nosso objetivo é tornar-nos a referência em jogos online gratuitos em Portugal!
+            </p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Grátis</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Disponível</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <img src="Nome do Site!.png" alt="GameWorld" width="130">
+    </footer>
+</body>
+</html>

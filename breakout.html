@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breakout - GameWorld</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #050f1e 0%, #071a3d 50%, #0a2463 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 1.5rem 1rem;
+  }
+
+  .back-btn {
+    position: fixed;
+    top: 1.2rem;
+    left: 1.2rem;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+    z-index: 10;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.14); }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #ff2e63;
+    text-shadow: 0 0 30px rgba(255,46,99,0.4);
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+  }
+
+  .info-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 480px;
+    justify-content: center;
+  }
+  .info-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 8px 24px;
+    text-align: center;
+    flex: 1;
+  }
+  .info-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 2px; }
+  .info-value { font-size: 22px; font-weight: 800; color: #fff; }
+
+  .canvas-container {
+    position: relative;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 10px;
+    margin-bottom: 1rem;
+  }
+
+  canvas { display: block; border-radius: 8px; background: #040d1f; }
+
+  .overlay {
+    position: absolute;
+    top: 10px; left: 10px; right: 10px; bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: rgba(4,13,31,0.88);
+  }
+  .overlay h2 { font-size: 1.8rem; font-weight: 800; color: #ff2e63; }
+  .overlay p { font-size: 1rem; color: rgba(255,255,255,0.65); text-align: center; }
+
+  .btn {
+    background: linear-gradient(135deg, #ff2e63, #c4234e);
+    color: #fff;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    padding: 12px 40px;
+    border-radius: 30px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 20px rgba(255,46,99,0.35);
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,46,99,0.5); }
+  .btn:active { transform: scale(0.97); }
+
+  .controls-hint { font-size: 13px; color: rgba(255,255,255,0.3); text-align: center; }
+
+  /* Controlos mobile */
+  .mobile-controls {
+    display: none;
+    gap: 16px;
+    margin-top: 0.8rem;
+  }
+  .arrow-btn {
+    width: 64px; height: 64px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    font-size: 26px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.1s;
+  }
+  .arrow-btn:active { background: rgba(255,46,99,0.3); }
+
+  @media (max-width: 520px) {
+    canvas { width: 340px !important; height: 440px !important; }
+    .mobile-controls { display: flex; }
+    .controls-hint { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="javascript:history.back()">&#8592; Voltar</a>
+
+<h1>Breakout</h1>
+
+<div class="info-bar">
+  <div class="info-card">
+    <div class="info-label">Pontos</div>
+    <div class="info-value" id="score">0</div>
+  </div>
+  <div class="info-card">
+    <div class="info-label">Nível</div>
+    <div class="info-value" id="level">1</div>
+  </div>
+  <div class="info-card">
+    <div class="info-label">Vidas</div>
+    <div class="info-value" id="lives">❤️❤️❤️</div>
+  </div>
+</div>
+
+<div class="canvas-container">
+  <canvas id="canvas" width="480" height="560"></canvas>
+  <div class="overlay" id="overlay">
+    <h2 id="ov-title">Breakout</h2>
+    <p id="ov-msg">Parte todos os blocos sem deixar a bola cair!<br>Move a raquete com o rato ou as setas do teclado.</p>
+    <button class="btn" id="start-btn">Jogar!</button>
+  </div>
+</div>
+
+<div class="mobile-controls">
+  <div class="arrow-btn" id="mob-left">◀</div>
+  <div class="arrow-btn" id="mob-right">▶</div>
+</div>
+
+<p class="controls-hint">Rato ou setas do teclado &nbsp;|&nbsp; P para pausar</p>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+const W = canvas.width;
+const H = canvas.height;
+
+// Configs
+const PADDLE_W = 90, PADDLE_H = 12, PADDLE_Y = H - 40;
+const BALL_R = 8;
+const BRICK_COLS = 8, BRICK_ROWS = 5;
+const BRICK_W = (W - 40) / BRICK_COLS;
+const BRICK_H = 22;
+const BRICK_PAD = 4;
+const BRICK_TOP = 60;
+
+// Cores dos tijolos por linha
+const ROW_COLORS = [
+  ['#ff2e63','#ff2e63'],
+  ['#ff6b35','#ff6b35'],
+  ['#ffd700','#ffd700'],
+  ['#4a90e2','#4a90e2'],
+  ['#1d9e75','#1d9e75'],
+];
+
+// Estado
+let paddle, ball, bricks, score, lives, level, running, paused, animId;
+let keys = {};
+let mouseX = W / 2;
+let best = 0;
+
+function initLevel(lvl) {
+  paddle = { x: W/2 - PADDLE_W/2, y: PADDLE_Y, w: PADDLE_W, h: PADDLE_H };
+  const speed = 4 + (lvl - 1) * 0.8;
+  ball = { x: W/2, y: PADDLE_Y - BALL_R - 2, dx: speed * (Math.random() > 0.5 ? 1 : -1), dy: -speed, r: BALL_R, launched: false };
+  bricks = [];
+  for (let r = 0; r < BRICK_ROWS; r++) {
+    for (let c = 0; c < BRICK_COLS; c++) {
+      const hits = r === 0 ? 2 : 1; // primeira linha aguenta 2 pancadas
+      bricks.push({
+        x: 20 + c * BRICK_W + BRICK_PAD/2,
+        y: BRICK_TOP + r * (BRICK_H + BRICK_PAD),
+        w: BRICK_W - BRICK_PAD,
+        h: BRICK_H,
+        hits,
+        maxHits: hits,
+        color: ROW_COLORS[r][0],
+        alive: true
+      });
+    }
+  }
+}
+
+function init() {
+  score = 0; lives = 3; level = 1;
+  document.getElementById('score').textContent = 0;
+  document.getElementById('level').textContent = 1;
+  updateLives();
+  initLevel(level);
+  running = true; paused = false;
+  document.getElementById('overlay').style.display = 'none';
+  if (animId) cancelAnimationFrame(animId);
+  loop();
+}
+
+function updateLives() {
+  document.getElementById('lives').textContent = '❤️'.repeat(lives);
+}
+
+function loop() {
+  update();
+  draw();
+  if (running) animId = requestAnimationFrame(loop);
+}
+
+function update() {
+  if (paused || !running) return;
+
+  // Mudar raquete com rato
+  paddle.x = mouseX - paddle.w / 2;
+  // Teclas
+  if (keys['ArrowLeft'])  paddle.x -= 7;
+  if (keys['ArrowRight']) paddle.x += 7;
+  // Mobile
+  if (keys['MobLeft'])  paddle.x -= 7;
+  if (keys['MobRight']) paddle.x += 7;
+
+  paddle.x = Math.max(0, Math.min(W - paddle.w, paddle.x));
+
+  // Bola cola à raquete até lançar
+  if (!ball.launched) {
+    ball.x = paddle.x + paddle.w / 2;
+    return;
+  }
+
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  // Paredes
+  if (ball.x - ball.r < 0)   { ball.x = ball.r;      ball.dx = Math.abs(ball.dx); }
+  if (ball.x + ball.r > W)   { ball.x = W - ball.r;  ball.dx = -Math.abs(ball.dx); }
+  if (ball.y - ball.r < 0)   { ball.y = ball.r;      ball.dy = Math.abs(ball.dy); }
+
+  // Bola caiu
+  if (ball.y - ball.r > H) {
+    lives--;
+    updateLives();
+    if (lives <= 0) { gameOver(); return; }
+    initLevel(level);
+    // mantém score e level
+    document.getElementById('score').textContent = score;
+    document.getElementById('level').textContent = level;
+    return;
+  }
+
+  // Colisão raquete
+  if (
+    ball.y + ball.r >= paddle.y &&
+    ball.y + ball.r <= paddle.y + paddle.h + Math.abs(ball.dy) &&
+    ball.x >= paddle.x - ball.r &&
+    ball.x <= paddle.x + paddle.w + ball.r &&
+    ball.dy > 0
+  ) {
+    ball.dy = -Math.abs(ball.dy);
+    // Desvio baseado no ponto de impacto
+    const hit = (ball.x - (paddle.x + paddle.w/2)) / (paddle.w/2);
+    ball.dx = hit * (4 + (level-1)*0.8) * 1.5;
+    ball.y = paddle.y - ball.r;
+  }
+
+  // Colisão tijolos
+  for (const b of bricks) {
+    if (!b.alive) continue;
+    if (
+      ball.x + ball.r > b.x && ball.x - ball.r < b.x + b.w &&
+      ball.y + ball.r > b.y && ball.y - ball.r < b.y + b.h
+    ) {
+      b.hits--;
+      if (b.hits <= 0) {
+        b.alive = false;
+        score += 10 * level;
+        document.getElementById('score').textContent = score;
+      }
+      // Direção do ricochete
+      const overlapL = (ball.x + ball.r) - b.x;
+      const overlapR = (b.x + b.w) - (ball.x - ball.r);
+      const overlapT = (ball.y + ball.r) - b.y;
+      const overlapB = (b.y + b.h) - (ball.y - ball.r);
+      const minH = Math.min(overlapL, overlapR);
+      const minV = Math.min(overlapT, overlapB);
+      if (minH < minV) ball.dx = -ball.dx;
+      else ball.dy = -ball.dy;
+      break;
+    }
+  }
+
+  // Nível completo
+  if (bricks.every(b => !b.alive)) {
+    level++;
+    document.getElementById('level').textContent = level;
+    lives = Math.min(lives + 1, 5);
+    updateLives();
+    initLevel(level);
+    document.getElementById('score').textContent = score;
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Fundo
+  ctx.fillStyle = '#040d1f';
+  ctx.fillRect(0, 0, W, H);
+
+  // Tijolos
+  for (const b of bricks) {
+    if (!b.alive) continue;
+    const alpha = b.hits < b.maxHits ? 0.5 : 1;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = b.color;
+    ctx.beginPath();
+    ctx.roundRect(b.x, b.y, b.w, b.h, 4);
+    ctx.fill();
+    // Brilho topo
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    ctx.beginPath();
+    ctx.roundRect(b.x + 2, b.y + 2, b.w - 4, 5, 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  // Raquete
+  const grad = ctx.createLinearGradient(paddle.x, paddle.y, paddle.x, paddle.y + paddle.h);
+  grad.addColorStop(0, '#ff2e63');
+  grad.addColorStop(1, '#a01040');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(paddle.x, paddle.y, paddle.w, paddle.h, 6);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.25)';
+  ctx.beginPath();
+  ctx.roundRect(paddle.x + 4, paddle.y + 2, paddle.w - 8, 4, 2);
+  ctx.fill();
+
+  // Bola
+  const ballGrad = ctx.createRadialGradient(ball.x - 2, ball.y - 2, 1, ball.x, ball.y, ball.r);
+  ballGrad.addColorStop(0, '#ffffff');
+  ballGrad.addColorStop(1, '#b0c8ff');
+  ctx.fillStyle = ballGrad;
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function gameOver() {
+  running = false;
+  if (score > best) best = score;
+  document.getElementById('ov-title').textContent = 'Game Over!';
+  document.getElementById('ov-msg').textContent = `Pontuação: ${score}${score >= best && score > 0 ? ' 🏆 Novo Recorde!' : ''}`;
+  document.getElementById('start-btn').textContent = 'Jogar de Novo';
+  document.getElementById('overlay').style.display = 'flex';
+}
+
+// Lançar bola com clique/espaço/toque
+canvas.addEventListener('click', () => { if (running && !paused) ball.launched = true; });
+document.addEventListener('keydown', e => {
+  keys[e.key] = true;
+  if (e.key === ' ') { if (running) ball.launched = true; e.preventDefault(); }
+  if (e.key === 'p' || e.key === 'P') { paused = !paused; }
+  if (['ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
+});
+document.addEventListener('keyup', e => { keys[e.key] = false; });
+
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = W / rect.width;
+  mouseX = (e.clientX - rect.left) * scaleX;
+});
+
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = W / rect.width;
+  mouseX = (e.touches[0].clientX - rect.left) * scaleX;
+  if (running) ball.launched = true;
+}, { passive: false });
+
+// Botões mobile
+const mobL = document.getElementById('mob-left');
+const mobR = document.getElementById('mob-right');
+mobL.addEventListener('pointerdown', () => { keys['MobLeft'] = true; if(running) ball.launched = true; });
+mobL.addEventListener('pointerup', () => { keys['MobLeft'] = false; });
+mobR.addEventListener('pointerdown', () => { keys['MobRight'] = true; if(running) ball.launched = true; });
+mobR.addEventListener('pointerup', () => { keys['MobRight'] = false; });
+
+document.getElementById('start-btn').addEventListener('click', init);
+
+// Ecrã inicial
+ctx.fillStyle = '#040d1f';
+ctx.fillRect(0, 0, W, H);
+</script>
+</body>
+</html>

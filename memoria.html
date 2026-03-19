@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameWorld - Jogo da Memória</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #050f1e 0%, #071a3d 50%, #0a2463 100%);
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        header {
+            background-color: #0f3460;
+            border-bottom: 2px solid #ff2e63;
+            padding: 20px 0;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-section img {
+            height: 200px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: rgba(233, 69, 96, 0.3);
+        }
+
+        nav a.active {
+            background-color: #e94560;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 2.2em;
+            color: #e94560;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        /* Info bar */
+        #info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .info-card {
+            background-color: #0f3460;
+            border: 2px solid #16213e;
+            border-radius: 10px;
+            padding: 15px 30px;
+            min-width: 120px;
+        }
+
+        .info-card .label {
+            font-size: 0.85em;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .info-card .value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #e94560;
+        }
+
+        /* Game grid */
+        #game {
+            display: grid;
+            gap: 12px;
+            justify-content: center;
+            margin: 0 auto 30px;
+        }
+
+        .card {
+            width: 85px;
+            height: 85px;
+            background: #0f3460;
+            border: 2px solid #16213e;
+            border-radius: 10px;
+            color: white;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .card:hover {
+            border-color: #ff2e63;
+            transform: scale(1.05);
+        }
+
+        .flipped {
+            background: #1a1a6e;
+            border-color: #e94560;
+        }
+
+        .matched {
+            background: #0f3460;
+            border-color: #4ade80;
+            cursor: default;
+        }
+
+        .matched:hover {
+            transform: none;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background-color: #e94560;
+            color: white;
+            padding: 12px 35px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #ff2e63;
+        }
+
+        /* Level complete message */
+        #mensagem {
+            display: none;
+            background-color: #0f3460;
+            border: 2px solid #4ade80;
+            border-radius: 15px;
+            padding: 20px 40px;
+            margin: 20px auto;
+            font-size: 1.3em;
+            color: #4ade80;
+            font-weight: 600;
+            max-width: 400px;
+        }
+
+        footer {
+            background-color: #0f3460;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+            border-top: 2px solid #ff2e63;
+        }
+
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 20px; padding: 20px; }
+            nav { flex-wrap: wrap; justify-content: center; }
+            .card { width: 65px; height: 65px; font-size: 24px; }
+            #info { gap: 15px; }
+            .info-card { padding: 10px 20px; min-width: 90px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="index.html">
+                    <img src="LOGO!!.png" alt="GameWorld Logo">
+                </a>
+            </div>
+            <nav>
+                <a href="index.html">Início</a>
+                <a href="jogos.html" class="active">Jogos</a>
+                <a href="sobre.html">Sobre</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">🧠 Jogo da Memória</h1>
+
+        <div id="info">
+            <div class="info-card">
+                <div class="label">Nível</div>
+                <div class="value" id="level">1</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Pontuação</div>
+                <div class="value" id="score">0</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Tempo</div>
+                <div class="value"><span id="time">0</span>s</div>
+            </div>
+        </div>
+
+        <div id="mensagem"></div>
+        <div id="game"></div>
+
+        <button class="btn" onclick="startGame()">🔄 Recomeçar</button>
+    </div>
+
+    <footer>
+        <img src="Nome do Site!.png" alt="GameWorld" width="130">
+    </footer>
+
+    <script>
+        const game = document.getElementById("game");
+        const levelDisplay = document.getElementById("level");
+        const scoreDisplay = document.getElementById("score");
+        const timeDisplay = document.getElementById("time");
+        const mensagem = document.getElementById("mensagem");
+
+        let level = 1;
+        let score = 0;
+        let time = 0;
+        let timer;
+        let firstCard = null;
+        let secondCard = null;
+        let lock = false;
+
+        function startGame() {
+            clearInterval(timer);
+            game.innerHTML = "";
+            firstCard = null;
+            secondCard = null;
+            lock = false;
+            time = 0;
+            timeDisplay.textContent = time;
+            mensagem.style.display = "none";
+            startTimer();
+            createLevel();
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                time++;
+                timeDisplay.textContent = time;
+            }, 1000);
+        }
+
+        function createLevel() {
+            levelDisplay.textContent = level;
+            scoreDisplay.textContent = score;
+            let pairs = level + 2;
+            let emojis = ["🍎","🍌","🍇","🍉","🍒","🍍","🥝","🍑","🎯","🎲"];
+            let selected = emojis.slice(0, pairs);
+            let cards = [...selected, ...selected];
+            cards.sort(() => 0.5 - Math.random());
+            let cols = Math.ceil(Math.sqrt(cards.length));
+            game.style.gridTemplateColumns = `repeat(${cols}, 85px)`;
+
+            cards.forEach((emoji) => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+                card.dataset.value = emoji;
+                card.addEventListener("click", () => {
+                    if (lock || card.classList.contains("flipped") || card.classList.contains("matched")) return;
+                    card.textContent = emoji;
+                    card.classList.add("flipped");
+                    if (!firstCard) {
+                        firstCard = card;
+                    } else {
+                        secondCard = card;
+                        lock = true;
+                        if (firstCard.dataset.value === secondCard.dataset.value) {
+                            firstCard.classList.add("matched");
+                            secondCard.classList.add("matched");
+                            score += 10;
+                            scoreDisplay.textContent = score;
+                            checkWin();
+                            resetTurn();
+                        } else {
+                            setTimeout(() => {
+                                firstCard.textContent = "";
+                                secondCard.textContent = "";
+                                firstCard.classList.remove("flipped");
+                                secondCard.classList.remove("flipped");
+                                resetTurn();
+                            }, 800);
+                        }
+                    }
+                });
+                game.appendChild(card);
+            });
+        }
+
+        function resetTurn() {
+            firstCard = null;
+            secondCard = null;
+            lock = false;
+        }
+
+        function checkWin() {
+            const matched = document.querySelectorAll(".matched");
+            if (matched.length === game.children.length) {
+                clearInterval(timer);
+                level++;
+                score += 50;
+                scoreDisplay.textContent = score;
+                mensagem.style.display = "block";
+                mensagem.textContent = `✅ Nível completo! +50 pontos bónus!`;
+                setTimeout(() => {
+                    startGame();
+                }, 1800);
+            }
+        }
+
+        startGame();
+    </script>
+</body>
+</html>

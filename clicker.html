@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameWorld - Clicker</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #050f1e 0%, #071a3d 50%, #0a2463 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            user-select: none;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background-color: #0f3460;
+            border-bottom: 2px solid #ff2e63;
+            padding: 20px 0;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-section img { height: 200px; width: auto; }
+
+        nav { display: flex; gap: 15px; }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover { background-color: rgba(233, 69, 96, 0.3); }
+        nav a.active { background-color: #e94560; }
+
+        /* ===== LAYOUT DO JOGO ===== */
+        .game-wrapper {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 25px;
+        }
+
+        /* ===== PAINEL CENTRAL (clicker) ===== */
+        .center-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Contadores no topo */
+        .score-board {
+            width: 100%;
+            background: #0f3460;
+            border: 2px solid #16213e;
+            border-radius: 15px;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .score-main {
+            font-size: 2.8em;
+            font-weight: 700;
+            color: #e94560;
+            line-height: 1;
+        }
+
+        .score-label { color: #aaa; font-size: 0.95em; margin-top: 6px; }
+
+        .score-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .score-stat .val { font-size: 1.2em; font-weight: 700; color: #fff; }
+        .score-stat .lbl { font-size: 0.8em; color: #aaa; }
+
+        /* Botão clicável principal */
+        .click-area {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .click-btn {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #ff2e63, #a0003a);
+            border: 5px solid #e94560;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+            transition: transform 0.08s ease, box-shadow 0.08s ease;
+            box-shadow: 0 0 40px rgba(233, 69, 96, 0.4), 0 0 0 0 rgba(233, 69, 96, 0.3);
+            position: relative;
+            overflow: visible;
+        }
+
+        .click-btn:active {
+            transform: scale(0.93);
+            box-shadow: 0 0 15px rgba(233, 69, 96, 0.3);
+        }
+
+        .click-btn:hover {
+            box-shadow: 0 0 60px rgba(233, 69, 96, 0.6), 0 0 0 0 rgba(233, 69, 96, 0.3);
+        }
+
+        /* Texto flutuante ao clicar */
+        .float-text {
+            position: fixed;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #e94560;
+            pointer-events: none;
+            animation: floatUp 0.9s ease forwards;
+            z-index: 999;
+        }
+
+        @keyframes floatUp {
+            0%   { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-80px) scale(1.3); }
+        }
+
+        /* Barra de nível */
+        .level-bar-container {
+            width: 100%;
+            background: #0f3460;
+            border: 2px solid #16213e;
+            border-radius: 12px;
+            padding: 18px 22px;
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .level-title { font-weight: 700; color: #e94560; font-size: 1em; }
+        .level-next  { font-size: 0.85em; color: #aaa; }
+
+        .level-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: #16213e;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .level-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e94560, #ff2e63);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        /* Melhorias de clique */
+        .upgrades-section {
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 1em;
+            font-weight: 700;
+            color: #e94560;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .upgrades-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .upgrade-btn {
+            background: #0f3460;
+            border: 2px solid #16213e;
+            border-radius: 10px;
+            padding: 14px;
+            color: #fff;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .upgrade-btn:hover:not(:disabled) {
+            border-color: #e94560;
+            background: rgba(233, 69, 96, 0.1);
+        }
+
+        .upgrade-btn:disabled {
+            opacity: 0.45;
+            cursor: default;
+        }
+
+        .upgrade-btn .u-name { font-size: 0.9em; font-weight: 700; }
+        .upgrade-btn .u-desc { font-size: 0.75em; color: #aaa; }
+        .upgrade-btn .u-cost { font-size: 0.85em; color: #e94560; font-weight: 700; margin-top: 4px; }
+
+        .upgrade-btn.bought {
+            border-color: #4ade80;
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        .upgrade-btn.bought .u-cost { color: #4ade80; }
+
+        /* ===== PAINEL DIREITO (lojas) ===== */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .shop-card {
+            background: #0f3460;
+            border: 2px solid #16213e;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .shop-card:hover:not(.disabled) {
+            border-color: #e94560;
+            background: rgba(233, 69, 96, 0.08);
+        }
+
+        .shop-card.disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        .shop-icon {
+            font-size: 2em;
+            width: 48px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .shop-info { flex: 1; }
+        .shop-name { font-weight: 700; font-size: 0.95em; }
+        .shop-desc { font-size: 0.78em; color: #aaa; margin-top: 2px; }
+        .shop-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .shop-cost { color: #e94560; font-weight: 700; font-size: 0.9em; }
+        .shop-owned {
+            background: #16213e;
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-size: 0.8em;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* ===== CONQUISTAS ===== */
+        .achievements-bar {
+            max-width: 1100px;
+            margin: 0 auto 30px;
+            padding: 0 20px;
+        }
+
+        .achievements-grid {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .achievement {
+            background: #0f3460;
+            border: 2px solid #16213e;
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-size: 0.82em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.35;
+            transition: all 0.3s ease;
+        }
+
+        .achievement.unlocked {
+            opacity: 1;
+            border-color: #fbbf24;
+            background: rgba(251, 191, 36, 0.08);
+        }
+
+        .achievement .a-icon { font-size: 1.3em; }
+        .achievement .a-name { font-weight: 700; }
+
+        /* Notificação de conquista */
+        .notif {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #0f3460;
+            border: 2px solid #fbbf24;
+            border-radius: 12px;
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95em;
+            z-index: 1000;
+            animation: slideIn 0.4s ease;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.2);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to   { transform: translateX(0);    opacity: 1; }
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background-color: #0f3460;
+            text-align: center;
+            padding: 30px;
+            margin-top: 20px;
+            border-top: 2px solid #ff2e63;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 20px; padding: 20px; }
+            nav { flex-wrap: wrap; justify-content: center; }
+            .game-wrapper { grid-template-columns: 1fr; }
+            .upgrades-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="logo-section">
+            <a href="Inicio.html">
+                <img src="Nova pasta/LOGO!!.png" alt="GameWorld Logo">
+            </a>
+        </div>
+        <nav>
+            <a href="Inicio.html">Início</a>
+            <a href="jogos.html" class="active">Jogos</a>
+            <a href="sobre.html">Sobre</a>
+        </nav>
+    </div>
+</header>
+
+<div class="game-wrapper">
+
+    <!-- PAINEL CENTRAL -->
+    <div class="center-panel">
+
+        <!-- Pontuação -->
+        <div class="score-board">
+            <div class="score-main" id="score-display">0</div>
+            <div class="score-label">pontos</div>
+            <div class="score-stats">
+                <div class="score-stat">
+                    <div class="val" id="cps-display">0</div>
+                    <div class="lbl">por segundo</div>
+                </div>
+                <div class="score-stat">
+                    <div class="val" id="cpp-display">1</div>
+                    <div class="lbl">por clique</div>
+                </div>
+                <div class="score-stat">
+                    <div class="val" id="total-display">0</div>
+                    <div class="lbl">total ganho</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botão principal -->
+        <div class="click-area">
+            <div class="click-btn" id="click-btn" onclick="handleClick(event)">🎮</div>
+        </div>
+
+        <!-- Barra de nível -->
+        <div class="level-bar-container">
+            <div class="level-header">
+                <span class="level-title" id="level-title">Nível 1 — Iniciante</span>
+                <span class="level-next" id="level-next">Próximo: 100 pts</span>
+            </div>
+            <div class="level-bar-bg">
+                <div class="level-bar-fill" id="level-bar" style="width:0%"></div>
+            </div>
+        </div>
+
+        <!-- Melhorias de clique -->
+        <div class="upgrades-section">
+            <div class="section-title">⚡ Melhorias de Clique</div>
+            <div class="upgrades-grid" id="upgrades-grid"></div>
+        </div>
+
+    </div>
+
+    <!-- PAINEL DIREITO (geradores automáticos) -->
+    <div class="right-panel">
+        <div class="section-title">🏪 Loja</div>
+        <div id="shop-list"></div>
+    </div>
+
+</div>
+
+<!-- Conquistas -->
+<div class="achievements-bar">
+    <div class="section-title">🏆 Conquistas</div>
+    <div class="achievements-grid" id="achievements-grid"></div>
+</div>
+
+<footer>
+    <img src="Nova pasta/Nome do Site!.png" alt="GameWorld" width="130">
+</footer>
+
+<script>
+    // ===== ESTADO DO JOGO =====
+    let pontos = 0;
+    let totalGanho = 0;
+    let porClique = 1;
+    let porSegundo = 0;
+    let nivel = 1;
+
+    // ===== MELHORIAS DE CLIQUE =====
+    const UPGRADES = [
+        { id: 'u1', name: 'Dedo Rápido',    desc: '+1 por clique',   cost: 50,    bonus: 1,  bought: false },
+        { id: 'u2', name: 'Turbo Click',     desc: '+3 por clique',   cost: 200,   bonus: 3,  bought: false },
+        { id: 'u3', name: 'Super Mão',       desc: '+8 por clique',   cost: 800,   bonus: 8,  bought: false },
+        { id: 'u4', name: 'Clique Dourado',  desc: '+20 por clique',  cost: 3000,  bonus: 20, bought: false },
+        { id: 'u5', name: 'Mega Punch',      desc: '+50 por clique',  cost: 10000, bonus: 50, bought: false },
+        { id: 'u6', name: 'Deus do Clique',  desc: '+150 por clique', cost: 50000, bonus: 150,bought: false },
+    ];
+
+    // ===== LOJA (geradores automáticos) =====
+    const SHOP = [
+        { id: 's1', icon: '🖱️', name: 'Auto-Clicker',   desc: 'Clica sozinho',          baseCost: 100,   cps: 1,   owned: 0 },
+        { id: 's2', icon: '🤖', name: 'Bot',             desc: 'Robô de cliques',         baseCost: 500,   cps: 5,   owned: 0 },
+        { id: 's3', icon: '⚙️', name: 'Fábrica',         desc: 'Produção em massa',       baseCost: 2000,  cps: 20,  owned: 0 },
+        { id: 's4', icon: '💻', name: 'Servidor',        desc: 'Cliques na cloud',        baseCost: 8000,  cps: 75,  owned: 0 },
+        { id: 's5', icon: '🚀', name: 'Foguetão',        desc: 'Cliques espaciais',       baseCost: 30000, cps: 250, owned: 0 },
+        { id: 's6', icon: '🌌', name: 'Galáxia',         desc: 'Poder cósmico',           baseCost: 150000,cps: 1000,owned: 0 },
+    ];
+
+    // ===== NÍVEIS =====
+    const NIVEIS = [
+        { nivel: 1,  nome: 'Iniciante',      req: 0       },
+        { nivel: 2,  nome: 'Aprendiz',       req: 100     },
+        { nivel: 3,  nome: 'Clicker',        req: 500     },
+        { nivel: 4,  nome: 'Veterano',       req: 2000    },
+        { nivel: 5,  nome: 'Expert',         req: 8000    },
+        { nivel: 6,  nome: 'Mestre',         req: 30000   },
+        { nivel: 7,  nome: 'Lenda',          req: 100000  },
+        { nivel: 8,  nome: 'Deus do Clique', req: 500000  },
+    ];
+
+    // ===== CONQUISTAS =====
+    const ACHIEVEMENTS = [
+        { id: 'a1', icon: '👆', name: '1º Clique',      check: () => totalGanho >= 1       },
+        { id: 'a2', icon: '💯', name: '100 Pontos',     check: () => totalGanho >= 100     },
+        { id: 'a3', icon: '🔥', name: '1.000 Pontos',   check: () => totalGanho >= 1000    },
+        { id: 'a4', icon: '⚡', name: '10.000 Pontos',  check: () => totalGanho >= 10000   },
+        { id: 'a5', icon: '💎', name: '100k Pontos',    check: () => totalGanho >= 100000  },
+        { id: 'a6', icon: '🏆', name: '1M Pontos',      check: () => totalGanho >= 1000000 },
+        { id: 'a7', icon: '🤖', name: '1º Bot',         check: () => SHOP[1].owned >= 1    },
+        { id: 'a8', icon: '🌌', name: 'Galáxia!',       check: () => SHOP[5].owned >= 1    },
+    ];
+
+    let achievementsUnlocked = new Set();
+
+    // Custo atual de um item da loja (sobe 15% a cada compra)
+    function shopCost(item) {
+        return Math.floor(item.baseCost * Math.pow(1.15, item.owned));
+    }
+
+    // Formata números grandes (1500 → 1.5k)
+    function fmt(n) {
+        if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
+        if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+        if (n >= 1e3) return (n / 1e3).toFixed(1) + 'k';
+        return Math.floor(n).toString();
+    }
+
+    // ===== CLIQUE PRINCIPAL =====
+    function handleClick(e) {
+        pontos += porClique;
+        totalGanho += porClique;
+
+        // Texto flutuante no local do clique
+        const el = document.createElement('div');
+        el.className = 'float-text';
+        el.textContent = '+' + fmt(porClique);
+        el.style.left = (e.clientX - 20) + 'px';
+        el.style.top  = (e.clientY - 10) + 'px';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 900);
+
+        updateUI();
+    }
+
+    // ===== COMPRAR MELHORIA =====
+    function buyUpgrade(id) {
+        const u = UPGRADES.find(x => x.id === id);
+        if (!u || u.bought || pontos < u.cost) return;
+        pontos -= u.cost;
+        porClique += u.bonus;
+        u.bought = true;
+        renderUpgrades();
+        updateUI();
+    }
+
+    // ===== COMPRAR DA LOJA =====
+    function buyShop(id) {
+        const s = SHOP.find(x => x.id === id);
+        if (!s || pontos < shopCost(s)) return;
+        pontos -= shopCost(s);
+        s.owned++;
+        calcCPS();
+        renderShop();
+        updateUI();
+    }
+
+    // Recalcula pontos por segundo com base nos itens comprados
+    function calcCPS() {
+        porSegundo = SHOP.reduce((total, s) => total + s.cps * s.owned, 0);
+    }
+
+    // ===== ATUALIZAR INTERFACE =====
+    function updateUI() {
+        document.getElementById('score-display').textContent = fmt(pontos);
+        document.getElementById('cps-display').textContent   = fmt(porSegundo);
+        document.getElementById('cpp-display').textContent   = fmt(porClique);
+        document.getElementById('total-display').textContent = fmt(totalGanho);
+
+        updateLevel();
+        updateUpgradesState();
+        updateShopState();
+        checkAchievements();
+    }
+
+    function updateLevel() {
+        let nivelAtual = NIVEIS[0];
+        let proximoNivel = NIVEIS[1];
+
+        for (let i = NIVEIS.length - 1; i >= 0; i--) {
+            if (totalGanho >= NIVEIS[i].req) {
+                nivelAtual = NIVEIS[i];
+                proximoNivel = NIVEIS[i + 1] || null;
+                break;
+            }
+        }
+
+        document.getElementById('level-title').textContent = `Nível ${nivelAtual.nivel} — ${nivelAtual.nome}`;
+
+        if (proximoNivel) {
+            const progresso = ((totalGanho - nivelAtual.req) / (proximoNivel.req - nivelAtual.req)) * 100;
+            document.getElementById('level-bar').style.width = Math.min(progresso, 100) + '%';
+            document.getElementById('level-next').textContent = `Próximo: ${fmt(proximoNivel.req)} pts`;
+        } else {
+            document.getElementById('level-bar').style.width = '100%';
+            document.getElementById('level-next').textContent = 'Nível máximo!';
+        }
+    }
+
+    // Ativa/desativa botões conforme os pontos disponíveis
+    function updateUpgradesState() {
+        UPGRADES.forEach(u => {
+            const btn = document.getElementById('upgrade-' + u.id);
+            if (!btn) return;
+            if (!u.bought) btn.disabled = pontos < u.cost;
+        });
+    }
+
+    function updateShopState() {
+        SHOP.forEach(s => {
+            const card = document.getElementById('shop-' + s.id);
+            if (!card) return;
+            const cost = shopCost(s);
+            card.querySelector('.shop-cost').textContent  = fmt(cost) + ' pts';
+            card.querySelector('.shop-owned').textContent = 'x' + s.owned;
+            card.className = 'shop-card' + (pontos < cost ? ' disabled' : '');
+        });
+    }
+
+    // ===== CONQUISTAS =====
+    function checkAchievements() {
+        ACHIEVEMENTS.forEach(a => {
+            if (!achievementsUnlocked.has(a.id) && a.check()) {
+                achievementsUnlocked.add(a.id);
+                document.getElementById('ach-' + a.id).classList.add('unlocked');
+                showNotification(a.icon, a.name);
+            }
+        });
+    }
+
+    function showNotification(icon, name) {
+        const notif = document.createElement('div');
+        notif.className = 'notif';
+        notif.innerHTML = `<span style="font-size:1.6em">${icon}</span><div><div style="font-weight:700;color:#fbbf24">Conquista desbloqueada!</div><div>${name}</div></div>`;
+        document.body.appendChild(notif);
+        setTimeout(() => notif.remove(), 3000);
+    }
+
+    // ===== RENDER HTML =====
+    function renderUpgrades() {
+        const grid = document.getElementById('upgrades-grid');
+        grid.innerHTML = '';
+        UPGRADES.forEach(u => {
+            const btn = document.createElement('button');
+            btn.className = 'upgrade-btn' + (u.bought ? ' bought' : '');
+            btn.id = 'upgrade-' + u.id;
+            btn.disabled = u.bought || pontos < u.cost;
+            btn.innerHTML = `
+                <span class="u-name">${u.name}</span>
+                <span class="u-desc">${u.desc}</span>
+                <span class="u-cost">${u.bought ? '✅ Comprado' : fmt(u.cost) + ' pts'}</span>
+            `;
+            if (!u.bought) btn.onclick = () => buyUpgrade(u.id);
+            grid.appendChild(btn);
+        });
+    }
+
+    function renderShop() {
+        const list = document.getElementById('shop-list');
+        list.innerHTML = '';
+        SHOP.forEach(s => {
+            const cost = shopCost(s);
+            const card = document.createElement('div');
+            card.className = 'shop-card' + (pontos < cost ? ' disabled' : '');
+            card.id = 'shop-' + s.id;
+            card.innerHTML = `
+                <div class="shop-icon">${s.icon}</div>
+                <div class="shop-info">
+                    <div class="shop-name">${s.name}</div>
+                    <div class="shop-desc">${s.desc} · +${fmt(s.cps)}/s</div>
+                    <div class="shop-bottom">
+                        <span class="shop-cost">${fmt(cost)} pts</span>
+                        <span class="shop-owned">x${s.owned}</span>
+                    </div>
+                </div>
+            `;
+            card.onclick = () => buyShop(s.id);
+            list.appendChild(card);
+        });
+    }
+
+    function renderAchievements() {
+        const grid = document.getElementById('achievements-grid');
+        ACHIEVEMENTS.forEach(a => {
+            const el = document.createElement('div');
+            el.className = 'achievement';
+            el.id = 'ach-' + a.id;
+            el.innerHTML = `<span class="a-icon">${a.icon}</span><span class="a-name">${a.name}</span>`;
+            grid.appendChild(el);
+        });
+    }
+
+    // ===== LOOP AUTOMÁTICO (pontos por segundo) =====
+    setInterval(() => {
+        if (porSegundo > 0) {
+            const ganho = porSegundo / 20; // corre 20x por segundo
+            pontos      += ganho;
+            totalGanho  += ganho;
+            updateUI();
+        }
+    }, 50);
+
+    // Atualiza apenas os estados dos botões a cada 500ms (mais leve)
+    setInterval(() => {
+        updateUpgradesState();
+        updateShopState();
+    }, 500);
+
+    // ===== INICIALIZAR =====
+    renderUpgrades();
+    renderShop();
+    renderAchievements();
+    updateUI();
+</script>
+
+</body>
+</html>

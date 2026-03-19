@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogo do Galo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #0d1b3e;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(255,60,120,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(30,80,200,0.12) 0%, transparent 60%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 2rem 1rem;
+  }
+
+  .back-btn {
+    position: fixed;
+    top: 1.2rem;
+    left: 1.2rem;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.14); }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #ff3c78;
+    text-shadow: 0 0 30px rgba(255,60,120,0.4);
+    letter-spacing: 0.04em;
+  }
+
+  .scoreboard {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+  }
+  .score-card {
+    flex: 1;
+    max-width: 120px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .score-card.active-x { border-color: #ff3c78; box-shadow: 0 0 16px rgba(255,60,120,0.25); }
+  .score-card.active-o { border-color: #4a90e2; box-shadow: 0 0 16px rgba(74,144,226,0.25); }
+  .score-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 4px;
+  }
+  .score-value { font-size: 28px; font-weight: 800; color: #fff; }
+  .score-card:nth-child(1) .score-label { color: #ff6a9b; }
+  .score-card:nth-child(3) .score-label { color: #6ab4ff; }
+
+  .status-msg {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    min-height: 28px;
+    text-align: center;
+  }
+  .status-msg span { color: #ff3c78; }
+  .status-msg span.o { color: #4a90e2; }
+
+  .board-wrap {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 18px;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 110px);
+    grid-template-rows: repeat(3, 110px);
+    gap: 8px;
+  }
+
+  .cell {
+    width: 110px;
+    height: 110px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .cell:hover:not(.taken) {
+    background: rgba(255,255,255,0.11);
+    transform: scale(1.03);
+  }
+  .cell.taken { cursor: default; }
+  .cell.win { background: rgba(255,60,120,0.18); border-color: rgba(255,60,120,0.5); }
+  .cell.win.win-o { background: rgba(74,144,226,0.18); border-color: rgba(74,144,226,0.5); }
+  .cell svg { width: 54px; height: 54px; }
+
+  .btn {
+    background: linear-gradient(135deg, #ff3c78, #c4234e);
+    color: #fff;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    padding: 12px 40px;
+    border-radius: 30px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 20px rgba(255,60,120,0.35);
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,60,120,0.45); }
+  .btn:active { transform: scale(0.97); }
+
+  @media (max-width: 400px) {
+    .board { grid-template-columns: repeat(3, 90px); grid-template-rows: repeat(3, 90px); }
+    .cell { width: 90px; height: 90px; }
+    .cell svg { width: 44px; height: 44px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="javascript:history.back()">&#8592; Voltar</a>
+
+<div class="container">
+  <h1>Jogo do Galo</h1>
+
+  <div class="scoreboard">
+    <div class="score-card" id="card-x">
+      <div class="score-label">Jogador X</div>
+      <div class="score-value" id="score-x">0</div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">Empates</div>
+      <div class="score-value" id="score-d">0</div>
+    </div>
+    <div class="score-card" id="card-o">
+      <div class="score-label">Jogador O</div>
+      <div class="score-value" id="score-o">0</div>
+    </div>
+  </div>
+
+  <div class="status-msg" id="status">Vez do <span id="current-player">X</span></div>
+
+  <div class="board-wrap">
+    <div class="board" id="board"></div>
+  </div>
+
+  <button class="btn" id="restart">Nova Partida</button>
+</div>
+
+<script>
+const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+let cells, current, over;
+const scores = { X: 0, O: 0, D: 0 };
+
+function svgX() {
+  return `<svg viewBox="0 0 54 54" fill="none"><line x1="13" y1="13" x2="41" y2="41" stroke="#ff3c78" stroke-width="4" stroke-linecap="round"/><line x1="41" y1="13" x2="13" y2="41" stroke="#ff3c78" stroke-width="4" stroke-linecap="round"/></svg>`;
+}
+function svgO() {
+  return `<svg viewBox="0 0 54 54" fill="none"><circle cx="27" cy="27" r="14" stroke="#4a90e2" stroke-width="4"/></svg>`;
+}
+
+function setStatus(msg) {
+  const s = document.getElementById('status');
+  const cp = document.getElementById('current-player');
+  if (msg) { s.innerHTML = msg; return; }
+  s.innerHTML = `Vez do <span class="${current==='O'?'o':''}" id="current-player">${current}</span>`;
+}
+
+function highlightTurn() {
+  document.getElementById('card-x').className = 'score-card' + (current==='X'&&!over?' active-x':'');
+  document.getElementById('card-o').className = 'score-card' + (current==='O'&&!over?' active-o':'');
+}
+
+function init() {
+  cells = Array(9).fill(null);
+  current = 'X'; over = false;
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  for (let i = 0; i < 9; i++) {
+    const c = document.createElement('div');
+    c.className = 'cell';
+    c.addEventListener('click', () => play(i));
+    board.appendChild(c);
+  }
+  setStatus(); highlightTurn();
+}
+
+function play(i) {
+  if (over || cells[i]) return;
+  cells[i] = current;
+  const el = document.getElementById('board').children[i];
+  el.classList.add('taken');
+  el.innerHTML = current === 'X' ? svgX() : svgO();
+
+  const win = checkWin();
+  if (win) {
+    const isO = current === 'O';
+    win.forEach(idx => {
+      const c = document.getElementById('board').children[idx];
+      c.classList.add('win');
+      if (isO) c.classList.add('win-o');
+    });
+    scores[current]++;
+    document.getElementById(`score-${current.toLowerCase()}`).textContent = scores[current];
+    setStatus(`<span class="${isO?'o':''}">Jogador ${current}</span> ganhou! 🎉`);
+    over = true; highlightTurn(); return;
+  }
+  if (cells.every(Boolean)) {
+    scores.D++;
+    document.getElementById('score-d').textContent = scores.D;
+    setStatus('Empate! 🤝');
+    over = true; highlightTurn(); return;
+  }
+  current = current === 'X' ? 'O' : 'X';
+  setStatus(); highlightTurn();
+}
+
+function checkWin() {
+  for (const [a,b,c] of WINS)
+    if (cells[a] && cells[a]===cells[b] && cells[b]===cells[c]) return [a,b,c];
+  return null;
+}
+
+document.getElementById('restart').addEventListener('click', init);
+init();
+</script>
+</body>
+</html>

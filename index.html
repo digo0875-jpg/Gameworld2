@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameWorld - Início</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #050f1e 0%, #071a3d 50%, #0a2463 100%);
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        header {
+            background-color: #0f3460;
+            border-bottom: 2px solid #ff2e63;
+            padding: 20px 0;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-section img {
+            height: 200px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: rgba(233, 69, 96, 0.3);
+        }
+
+        nav a.active {
+            background-color: #e94560;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 60px 40px;
+            background-color: #0f3460;
+            border-radius: 15px;
+            margin: 40px 0;
+            border: 2px solid #16213e;
+        }
+
+        .hero-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #e94560;
+            font-weight: 700;
+        }
+
+        .hero-section p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+        }
+
+        .hero-section img {
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #e94560;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #ff2e63;
+        }
+
+        .features-title {
+            text-align: center;
+            margin: 60px 0 40px;
+            font-size: 2.2em;
+            color: #e94560;
+            font-weight: 700;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background-color: #0f3460;
+            padding: 40px 30px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #16213e;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: #ff2e63;
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            color: #ff2e63;
+            margin: 20px 0 15px;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            line-height: 1.6;
+        }
+
+        footer {
+            background-color: #0f3460;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+            border-top: 2px solid #ff2e63;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .logo-section {
+                justify-content: center;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-section h2 {
+                font-size: 2em;
+            }
+
+            .hero-section p {
+                font-size: 1.1em;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="index.html">
+                    <img src="LOGO!!.png" alt="GameWorld Logo">
+                </a>
+            </div>
+            <nav>
+                <a href="index.html" class="active">Início</a>
+                <a href="jogos.html">Jogos</a>
+                <a href="sobre.html">Sobre</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero-section">
+            <img src="C-pia-de-GameWorld-unscreen.gif" alt="GameWorld" width="250">
+            <h2>Bem-vindo ao GameWorld</h2>
+            <p>O melhor portal de jogos online está aqui!</p>
+            <a href="jogos.html" class="cta-button">Ver Jogos</a>
+        </div>
+
+        <h2 class="features-title">Porque escolher o GameWorld?</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Variedade de Jogos</h3>
+                <p>Dezenas de jogos para todos os gostos e idades</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Totalmente Grátis</h3>
+                <p>Joga sem pagar nada, sem taxas escondidas</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Joga Instantaneamente</h3>
+                <p>Sem downloads, joga diretamente no navegador</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <h3>Sempre Atualizado</h3>
+                <p>Novos jogos adicionados regularmente</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <img src="Nome do Site!.png" alt="GameWorld" width="130">
+    </footer>
+</body>
+</html>
